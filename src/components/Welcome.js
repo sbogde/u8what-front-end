@@ -54,7 +54,7 @@ export default function Welcome() {
                     : "primary.light",
               }}
             >
-              whip-ma-whop-ma-pic
+              u8what
             </Typography>
           </Typography>
           {/* <Typography

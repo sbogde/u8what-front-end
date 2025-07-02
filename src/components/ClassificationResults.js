@@ -68,13 +68,15 @@ const ClassificationResults = ({ results, error, resizedImage, modelUsed }) => {
           </>
         )}
 
-        <Alert severity="warning">
-          {results.map((p, i) => (
-            <div key={i}>
-              {p.label} - {p.confidence.toFixed(2)}%
-            </div>
-          ))}
-        </Alert>
+        {/* <Alert severity="warning">
+          {results.length
+            ? results.map((p, i) => (
+                <div key={i}>
+                  {p.label} - {p.confidence.toFixed(2)}%
+                </div>
+              ))
+            : "Please upload a pic first"}
+        </Alert> */}
 
         {!error && !modelUsed && (
           <Alert severity="warning">Please upload a pic first.</Alert>

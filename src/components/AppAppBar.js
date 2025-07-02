@@ -83,7 +83,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                 px: 0,
               }}
             >
-              <img src={"/imgs/whipma.svg"} style={logoStyle} alt="wmwmp" />
+              <img src={"/imgs/whipma.svg"} style={logoStyle} alt="logo" />
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
                 <MenuItem
                   onClick={() => scrollToSection("features")}
