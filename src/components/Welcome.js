@@ -35,19 +35,21 @@ export default function Welcome() {
           <Typography
             variant="h1"
             sx={{
-              display: "flex",
+              display: "inline",
               flexDirection: { xs: "column", md: "row" },
               alignSelf: "center",
               textAlign: "center",
-              fontSize: "clamp(2rem, 7vw, 2.2rem)",
+              fontSize: "clamp(1.4rem, 5.5vw, 2rem)",
+              lineHeight: 1.2,
             }}
           >
             Welcome to&nbsp;
             <Typography
               component="span"
-              variant="h1"
+              variant="inherit"
               sx={{
-                fontSize: "clamp(2rem, 7vw, 2.2rem)",
+                display: "inline",
+                fontSize: "clamp(1.4rem, 5.5vw, 2rem)",
                 color: (theme) =>
                   theme.palette.mode === "light"
                     ? "primary.main"
@@ -57,49 +59,6 @@ export default function Welcome() {
               u8what
             </Typography>
           </Typography>
-          {/* <Typography
-            textAlign="center"
-            color="text.secondary"
-            sx={{ alignSelf: "center", width: { sm: "100%", md: "80%" } }}
-          >
-            Explore our cutting-edge dashboard, delivering high-quality
-            solutions tailored to your needs. Elevate your experience with
-            top-tier features and services.
-          </Typography> */}
-          {/* <Stack
-            direction={{ xs: "column", sm: "row" }}
-            alignSelf="center"
-            spacing={1}
-            useFlexGap
-            sx={{ pt: 2, width: { xs: "100%", sm: "auto" } }}
-          >
-            <TextField
-              id="outlined-basic"
-              hiddenLabel
-              size="small"
-              variant="outlined"
-              aria-label="Enter your email address"
-              placeholder="Your email address"
-              inputProps={{
-                autoComplete: "off",
-                "aria-label": "Enter your email address",
-              }}
-            />
-            <Button variant="contained" color="primary">
-              Start now
-            </Button>
-          </Stack> */}
-          {/* <Typography
-            variant="caption"
-            textAlign="center"
-            sx={{ opacity: 0.8 }}
-          >
-            By clicking &quot;Start now&quot; you agree to our&nbsp;
-            <Link href="#" color="primary">
-              Terms & Conditions
-            </Link>
-            .
-          </Typography> */}
         </Stack>
         {/* <Box
           id="image"
