@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import Box from "@mui/material/Box";
@@ -21,7 +21,18 @@ const logoStyle = {
 };
 
 function AppAppBar({ mode, toggleColorMode }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e); // Save the event for later
+    };
+
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -123,17 +134,27 @@ function AppAppBar({ mode, toggleColorMode }) {
               }}
             >
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-              {
+              {deferredPrompt && (
                 <Button
                   color="primary"
                   variant="text"
                   size="small"
-                  component="a"
-                  href="/"
+                  onClick={() => {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                      if (choiceResult.outcome === "accepted") {
+                        console.log("PWA install accepted");
+                      } else {
+                        console.log("PWA install dismissed");
+                      }
+                      setDeferredPrompt(null); // clear the prompt
+                    });
+                  }}
                 >
                   Install
                 </Button>
-                /*
+              )}
+              {/*
               <Button
                 color="primary"
                 variant="contained"
@@ -143,8 +164,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                 target="_blank"
               >
                 Sign up
-              </Button> */
-              }
+              </Button> */}
             </Box>
             <Box sx={{ display: { sm: "", md: "none" } }}>
               <Button
