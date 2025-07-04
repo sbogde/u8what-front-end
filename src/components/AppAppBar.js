@@ -14,7 +14,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorMode from "./ToggleColorMode";
 
 const logoStyle = {
-  width: "300px",
+  margin: "0 33px 0 22px",
+  width: "58px",
   height: "auto",
   cursor: "pointer",
 };
@@ -83,7 +84,8 @@ function AppAppBar({ mode, toggleColorMode }) {
                 px: 0,
               }}
             >
-              <img src={"/imgs/whipma.svg"} style={logoStyle} alt="logo" />
+              <img src={"/imgs/u8what.svg"} style={logoStyle} alt="logo" />
+
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
                 <MenuItem
                   onClick={() => scrollToSection("features")}
@@ -93,14 +95,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                     Models
                   </Typography>
                 </MenuItem>
-                {/* <MenuItem
-                  onClick={() => scrollToSection("testimonials")}
-                  sx={{ py: "6px", px: "12px" }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Testimonials
-                  </Typography>
-                </MenuItem> */}
+
                 <MenuItem
                   onClick={() => scrollToSection("highlights")}
                   sx={{ py: "6px", px: "12px" }}
@@ -109,14 +104,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                     Highlights
                   </Typography>
                 </MenuItem>
-                {/* <MenuItem
-                  onClick={() => scrollToSection("pricing")}
-                  sx={{ py: "6px", px: "12px" }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Pricing
-                  </Typography>
-                </MenuItem> */}
+
                 <MenuItem
                   onClick={() => scrollToSection("faq")}
                   sx={{ py: "6px", px: "12px" }}
@@ -135,16 +123,17 @@ function AppAppBar({ mode, toggleColorMode }) {
               }}
             >
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-              {/* <Button
-                color="primary"
-                variant="text"
-                size="small"
-                component="a"
-                href="/material-ui/getting-started/templates/sign-in/"
-                target="_blank"
-              >
-                Sign in
-              </Button>
+              {
+                <Button
+                  color="primary"
+                  variant="text"
+                  size="small"
+                  component="a"
+                  href="/"
+                >
+                  Install
+                </Button>
+                /*
               <Button
                 color="primary"
                 variant="contained"
@@ -154,7 +143,8 @@ function AppAppBar({ mode, toggleColorMode }) {
                 target="_blank"
               >
                 Sign up
-              </Button> */}
+              </Button> */
+              }
             </Box>
             <Box sx={{ display: { sm: "", md: "none" } }}>
               <Button
