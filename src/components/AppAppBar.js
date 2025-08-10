@@ -14,8 +14,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorMode from "./ToggleColorMode";
 
 const logoStyle = {
+  // margin: "0 33px 0 22px",
   margin: "0 33px 0 22px",
-  width: "58px",
+
+  width: "146px",
   height: "auto",
   cursor: "pointer",
 };
@@ -95,7 +97,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                 px: 0,
               }}
             >
-              <img src={"/imgs/u8what.svg"} style={logoStyle} alt="logo" />
+              <img src={"/imgs/u8what.png"} style={logoStyle} alt="logo" />
 
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
                 <MenuItem
