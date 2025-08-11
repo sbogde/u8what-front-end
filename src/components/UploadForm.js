@@ -82,7 +82,10 @@ const UploadForm = ({ onResultsUpdate }) => {
             <MenuItem value="hub-v0.4-272">hub-v0.4-272</MenuItem>
             <MenuItem value="hub-v2.1-272">hub-v2.1-272</MenuItem>
             <MenuItem value="runs864">runs864</MenuItem>
-            <MenuItem value="runs166">runs166</MenuItem>
+            <MenuItem value="runs166">runs166*</MenuItem>
+            <MenuItem value="best-v0.4-3-yv8m-100-640-55">
+              best-v0.4-3-yv8m-100-640-55*
+            </MenuItem>
 
             {/* <MenuItem value="densenet121">DenseNet121</MenuItem>
             <MenuItem value="mobilenet">MobileNet</MenuItem>
