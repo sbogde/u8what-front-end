@@ -86,6 +86,9 @@ const UploadForm = ({ onResultsUpdate }) => {
             <MenuItem value="best-v0.4-3-yv8m-100-640-55">
               best-v0.4-3-yv8m-100-640-55*
             </MenuItem>
+            <MenuItem value="best-v0.4-3-yv8m-100-640-55">
+              runs355-v0.4-3-yv8m-100-640*
+            </MenuItem>
 
             {/* <MenuItem value="densenet121">DenseNet121</MenuItem>
             <MenuItem value="mobilenet">MobileNet</MenuItem>
