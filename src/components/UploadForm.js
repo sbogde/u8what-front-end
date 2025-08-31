@@ -67,6 +67,10 @@ const UploadForm = ({ onResultsUpdate }) => {
             <MenuItem value="v0.4-Google-Colab">v0.4 Google Colab</MenuItem>
             <MenuItem value="v2.1-Google-Colab">v2.1 Google Colab</MenuItem>
 
+            <MenuItem value="v0.4-Mici-Google-Colab">
+              Mici! v0.4 Google Colab
+            </MenuItem>
+
             <MenuItem value="yolov8n-seg">yolov8n-seg</MenuItem>
             <MenuItem value="yolov8s-seg">yolov8s-seg</MenuItem>
             <MenuItem value="yolov8m-seg">yolov8m-seg</MenuItem>
