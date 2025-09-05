@@ -71,6 +71,14 @@ const UploadForm = ({ onResultsUpdate }) => {
               Mici! v0.4 Google Colab
             </MenuItem>
 
+            {/* <MenuItem value="v0.4_mici_plus3_stageB_epoch_02">
+              Mici, Sarmalex2, Mamaliga v0.4
+            </MenuItem> */}
+
+            <MenuItem value="v0.4_mici_sarmale_mamaliga">
+              Mici, 2xSarmale, Mamaliga v0.4
+            </MenuItem>
+
             <MenuItem value="yolov8n-seg">yolov8n-seg</MenuItem>
             <MenuItem value="yolov8s-seg">yolov8s-seg</MenuItem>
             <MenuItem value="yolov8m-seg">yolov8m-seg</MenuItem>
