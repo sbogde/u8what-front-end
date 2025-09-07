@@ -82,6 +82,9 @@ const UploadForm = ({ onResultsUpdate }) => {
             <MenuItem value="v2.1_plus_yorkshire_pudding_gc">
               Yorkshire Pudding v2.1 GC
             </MenuItem>
+            <MenuItem value="v2.1_plus_yorkshire_pudding_uhub">
+              Yorkshire Pudding v2.1 UHUB
+            </MenuItem>
 
             <MenuItem value="yolov8n-seg">yolov8n-seg</MenuItem>
             <MenuItem value="yolov8s-seg">yolov8s-seg</MenuItem>
