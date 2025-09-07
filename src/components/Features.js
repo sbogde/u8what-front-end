@@ -16,30 +16,30 @@ import ViewQuiltRoundedIcon from "@mui/icons-material/ViewQuiltRounded";
 const items = [
   {
     icon: <ViewQuiltRoundedIcon />,
-    title: "VGG16 / VGG19",
+    title: "YOLOv8 Segmentation (n/s/m/l/x)",
     description:
-      "VGG16 and VGG19 are deep convolutional neural networks developed by the Visual Geometry Groups at the University of Oxford. Both models emphasise network depth and the use of small 3x3 convolution filters. VGG16 has 16 weight layers, while VGG19 has 19.",
-    imageLight: 'url("/static/vgg16.jpg")',
-    imageDark: 'url("/static/vgg16.jpg")',
-    link: "https://www.geeksforgeeks.org/vgg-16-cnn-model",
+      "The real-time instance-segmentation family used across u8what. Strong speed/accuracy trade-offs with model sizes from nano to x-large. Forms the backbone for all our custom food models.",
+    imageLight: 'url("/static/yolo.webp")',
+    imageDark: 'url("/static/yolo.webp")',
+    link: "https://docs.ultralytics.com/tasks/segment/",
   },
   {
     icon: <EdgesensorHighRoundedIcon />,
-    title: "EfficientNetB7",
+    title: "MyFoodRepo v0.4 — Custom YOLOv8-seg",
     description:
-      "EfficientNetB7 is part of the EfficientNet family, which scales the depth, width, and resolution of the network systematically. EfficientNetB7 is one of the largest models in this family, offering high accuracy while maintaining computational efficiency.",
-    imageLight: 'url("/static/EfficientNetB7.PNG")',
-    imageDark: 'url("/static/EfficientNetB7.PNG")',
-    link: "https://arxiv.org/pdf/1905.11946",
+      "Our earlier custom model fine-tuned on the MyFoodRepo v0.4 dataset. Trained via Ultralytics Hub/Colab; used for the first production runs and early food classes (e.g., Mici/Sarmale/Mămăligă).",
+    imageLight: 'url("/static/mfr-v04-collage.jpg")',
+    imageDark: 'url("/static/mfr-v04-collage.jpg")',
+    link: "https://www.aicrowd.com/challenges/food-recognition-challenge",
   },
   {
     icon: <DevicesRoundedIcon />,
-    title: "InceptionV3",
+    title: "MyFoodRepo v2.1 — Custom YOLOv8-seg",
     description:
-      "InceptionV3 incorporates factorised convolutions to reduce computational costs and improve training speed. The architecture includes the use of auxiliary classifiers during training, which helps to combat the vanishing gradient problem.",
-    imageLight: 'url("/static/InceptionV3.PNG")',
-    imageDark: 'url("/static/InceptionV3.PNG")',
-    link: "#",
+      "The newer custom model trained on MyFoodRepo v2.1 with improved labels and higher input sizes. Powers variants like the Yorkshire-pudding model and current experiments.",
+    imageLight: 'url("/static/mfr-v21-collage.png")',
+    imageDark: 'url("/static/mfr-v21-collage.png")',
+    link: "https://www.aicrowd.com/challenges/food-recognition-benchmark-2022",
   },
 ];
 
@@ -65,7 +65,7 @@ export default function Features() {
               color="text.secondary"
               sx={{ mb: { xs: 2, sm: 4 } }}
             >
-              Here you have a brief overview of the Models/Keras Apps used.
+              Here is a brief overview of the models used.
             </Typography>
           </div>
           <Grid
