@@ -79,6 +79,10 @@ const UploadForm = ({ onResultsUpdate }) => {
               Mici, 2xSarmale, Mamaliga v0.4
             </MenuItem>
 
+            <MenuItem value="v2.1_plus_yorkshire_pudding_gc">
+              Yorkshire Pudding v2.1 GC
+            </MenuItem>
+
             <MenuItem value="yolov8n-seg">yolov8n-seg</MenuItem>
             <MenuItem value="yolov8s-seg">yolov8s-seg</MenuItem>
             <MenuItem value="yolov8m-seg">yolov8m-seg</MenuItem>
