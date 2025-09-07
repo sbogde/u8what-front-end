@@ -48,7 +48,13 @@ const LogsTable = () => {
     fetchLogs(page);
   }, [page]);
 
-  const handleReload = () => setPage(1);
+  const handleReload = () => {
+    if (page === 1) {
+      fetchLogs(1); // force refresh
+    } else {
+      setPage(1); // will trigger useEffect
+    }
+  };
 
   const disablePrev = page <= 1;
   const disableNext = page * PAGE_SIZE >= total;
@@ -91,8 +97,8 @@ const LogsTable = () => {
                     <Avatar
                       alt={log.image}
                       title={log.image}
-                      src={`${process.env.REACT_APP_API_URL}/uploads/models/${log.image}`}
-                      sx={{ width: 32, height: 32 }}
+                      src={`${process.env.REACT_APP_API_URL}/uploads/${log.filename_server}`}
+                      sx={{ width: 40, height: 40 }}
                     />
                   </TableCell>
                   <TableCell>{log.model}</TableCell>
