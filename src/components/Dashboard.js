@@ -7,13 +7,13 @@ import LogsTable from "./LogsTable";
 const Dashboard = () => {
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
-  const [resizedImage, setResizedImage] = useState("");
+  const [originalImage, setOriginalImage] = useState("");
   const [modelUsed, setModelUsed] = useState("");
   const [logsReloadKey, setLogsReloadKey] = useState(0);
 
   const handleResultsUpdate = (data) => {
     setResults(data?.results || []);
-    setResizedImage(data?.resized_image || "");
+    setOriginalImage(data?.image || "");
     setModelUsed(data?.model || "");
     if (data?.error) {
       setError(data.error);
@@ -33,7 +33,7 @@ const Dashboard = () => {
           <ClassificationResults
             results={results}
             error={error}
-            resizedImage={resizedImage}
+            originalImage={originalImage}
             modelUsed={modelUsed}
           />
         </Grid>
