@@ -9,6 +9,7 @@ const Dashboard = () => {
   const [error, setError] = useState("");
   const [resizedImage, setResizedImage] = useState("");
   const [modelUsed, setModelUsed] = useState("");
+  const [logsReloadKey, setLogsReloadKey] = useState(0);
 
   const handleResultsUpdate = (data) => {
     setResults(data?.results || []);
@@ -18,6 +19,7 @@ const Dashboard = () => {
       setError(data.error);
     } else {
       setError("");
+      setLogsReloadKey((k) => k + 1);
     }
   };
 
@@ -36,7 +38,7 @@ const Dashboard = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <LogsTable />
+          <LogsTable reloadKey={logsReloadKey} />
         </Grid>
       </Grid>
     </Box>

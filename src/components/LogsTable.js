@@ -20,7 +20,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 
 const PAGE_SIZE = 5;
 
-const LogsTable = () => {
+const LogsTable = ({ reloadKey }) => {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1); // 1-based page
   const [total, setTotal] = useState(0);
@@ -47,6 +47,15 @@ const LogsTable = () => {
   useEffect(() => {
     fetchLogs(page);
   }, [page]);
+
+  // refresh when parent signals a reload (after a new upload)
+  useEffect(() => {
+    if (page === 1) {
+      fetchLogs(1);
+    } else {
+      setPage(1);
+    }
+  }, [reloadKey]);
 
   const handleReload = () => {
     if (page === 1) {
@@ -84,7 +93,7 @@ const LogsTable = () => {
                 <TableCell>ID</TableCell>
                 <TableCell>Image</TableCell>
                 <TableCell>Model</TableCell>
-                <TableCell>Prediction</TableCell>
+                <TableCell>Best Prediction</TableCell>
                 <TableCell>Confidence</TableCell>
                 <TableCell>Date</TableCell>
               </TableRow>
@@ -97,7 +106,7 @@ const LogsTable = () => {
                     <Avatar
                       alt={log.image}
                       title={log.image}
-                      src={`${process.env.REACT_APP_API_URL}/uploads/${log.filename_server}`}
+                      src={`${process.env.REACT_APP_API_URL}/uploads/${log.image}`}
                       sx={{ width: 40, height: 40 }}
                     />
                   </TableCell>
