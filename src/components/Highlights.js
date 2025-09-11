@@ -14,40 +14,40 @@ import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
 
 const items = [
   {
-    icon: <SettingsSuggestRoundedIcon />,
-    title: 'Adaptable performance',
-    description:
-      'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
-  },
-  {
-    icon: <ConstructionRoundedIcon />,
-    title: 'Built to last',
-    description:
-      'Experience unmatched durability that goes above and beyond with lasting investment.',
-  },
-  {
     icon: <ThumbUpAltRoundedIcon />,
-    title: 'Great user experience',
+    title: 'Simple image upload',
     description:
-      'Integrate our product into your routine with an intuitive and easy-to-use interface.',
+      'Choose a model, upload a photo, and get segments and labels in seconds.',
+  },
+  {
+    icon: <SettingsSuggestRoundedIcon />,
+    title: 'Switch between models',
+    description:
+      'Try YOLOv8 variants and our custom food models trained on MyFoodRepo v0.4 and v2.1.',
   },
   {
     icon: <AutoFixHighRoundedIcon />,
-    title: 'Innovative functionality',
+    title: 'Clear, overlaid results',
     description:
-      'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
-  },
-  {
-    icon: <SupportAgentRoundedIcon />,
-    title: 'Reliable support',
-    description:
-      'Count on our responsive customer support, offering assistance that goes beyond the purchase.',
+      'See coloured masks, labels, and confidence for each region in the image.',
   },
   {
     icon: <QueryStatsRoundedIcon />,
-    title: 'Precision in every detail',
+    title: 'Run history',
     description:
-      'Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.',
+      'Recent uploads and predictions appear in a logs table with paging.',
+  },
+  {
+    icon: <ConstructionRoundedIcon />,
+    title: 'Compact stack',
+    description:
+      'React and MUI on the front end, Flask API on the back end, deployed on Netlify.',
+  },
+  {
+    icon: <SupportAgentRoundedIcon />,
+    title: 'Open and practical',
+    description:
+      'Built with open tools and datasets. Links to docs and datasets are included.',
   },
 ];
 
@@ -81,9 +81,9 @@ export default function Highlights() {
             Highlights
           </Typography>
           <Typography variant="body1" sx={{ color: 'grey.400' }}>
-            Explore why our product stands out: adaptability, durability,
-            user-friendly design, and innovation. Enjoy reliable customer support and
-            precision in every detail.
+            A small web app for food instance segmentation. Upload a photo, pick a
+            model, and view the results. The interface is simple and the parts are
+            easy to understand.
           </Typography>
         </Box>
         <Grid container spacing={2.5}>
