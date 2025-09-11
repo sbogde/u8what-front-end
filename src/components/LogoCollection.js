@@ -2,24 +2,28 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 import { useTheme } from '@mui/system';
 
-const whiteLogos = [
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/6560628e8573c43893fe0ace_Sydney-white.svg',
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/655f4d520d0517ae8e8ddf13_Bern-white.svg',
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/655f46794c159024c1af6d44_Montreal-white.svg',
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e891fa22f89efd7477a_TerraLight.svg',
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/6560a09d1f6337b1dfed14ab_colorado-white.svg',
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/655f5caa77bf7d69fb78792e_Ankara-white.svg',
+// Tech logos (mono) using Simple Icons CDN with proper alt text and links
+const techLogosLight = [
+  { src: 'https://cdn.simpleicons.org/react/111827', alt: 'React', href: 'https://react.dev/' },
+  { src: 'https://cdn.simpleicons.org/mui/111827', alt: 'MUI', href: 'https://mui.com/' },
+  { src: 'https://cdn.simpleicons.org/pytorch/111827', alt: 'PyTorch', href: 'https://pytorch.org/' },
+  { src: 'https://cdn.simpleicons.org/googlecolab/111827', alt: 'Google Colab', href: 'https://colab.research.google.com/' },
+  { src: 'https://cdn.simpleicons.org/flask/111827', alt: 'Flask', href: 'https://flask.palletsprojects.com/' },
+  { src: 'https://cdn.simpleicons.org/netlify/111827', alt: 'Netlify', href: 'https://www.netlify.com/' },
+  { src: 'https://cdn.simpleicons.org/ultralytics/111827', alt: 'Ultralytics', href: 'https://ultralytics.com/' },
 ];
 
-const darkLogos = [
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/6560628889c3bdf1129952dc_Sydney-black.svg',
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/655f4d4d8b829a89976a419c_Bern-black.svg',
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/655f467502f091ccb929529d_Montreal-black.svg',
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e911fa22f2203d7514c_TerraDark.svg',
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/6560a0990f3717787fd49245_colorado-black.svg',
-  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/655f5ca4e548b0deb1041c33_Ankara-black.svg',
+const techLogosDark = [
+  { src: 'https://cdn.simpleicons.org/react/ffffff', alt: 'React', href: 'https://react.dev/' },
+  { src: 'https://cdn.simpleicons.org/mui/ffffff', alt: 'MUI', href: 'https://mui.com/' },
+  { src: 'https://cdn.simpleicons.org/pytorch/ffffff', alt: 'PyTorch', href: 'https://pytorch.org/' },
+  { src: 'https://cdn.simpleicons.org/googlecolab/ffffff', alt: 'Google Colab', href: 'https://colab.research.google.com/' },
+  { src: 'https://cdn.simpleicons.org/flask/ffffff', alt: 'Flask', href: 'https://flask.palletsprojects.com/' },
+  { src: 'https://cdn.simpleicons.org/netlify/ffffff', alt: 'Netlify', href: 'https://www.netlify.com/' },
+  { src: 'https://cdn.simpleicons.org/ultralytics/ffffff', alt: 'Ultralytics', href: 'https://ultralytics.com/' },
 ];
 
 const logoStyle = {
@@ -31,7 +35,43 @@ const logoStyle = {
 
 export default function LogoCollection() {
   const theme = useTheme();
-  const logos = theme.palette.mode === 'light' ? darkLogos : whiteLogos;
+  const API_BASE = process.env.REACT_APP_API_URL;
+  // In light mode we prefer darker marks; in dark mode we prefer white
+  const logos = theme.palette.mode === 'light' ? techLogosLight : techLogosDark;
+
+  // Food recognition examples and dataset cards
+  const recogniseItems = [
+    {
+      src: API_BASE ? `${API_BASE}/uploads/mici.jpg` : '/imgs/mici.jpg',
+      alt: 'Mici (Mititei)',
+      href: 'https://en.wikipedia.org/wiki/Mititei',
+    },
+    {
+      src: API_BASE ? `${API_BASE}/uploads/sarmale.jpg` : '/imgs/sarmale.jpg',
+      alt: 'Sarmale (Cabbage rolls)',
+      href: 'https://en.wikipedia.org/wiki/Sarma_(food)',
+    },
+    {
+      src: API_BASE ? `${API_BASE}/uploads/mamaliga.jpg` : '/imgs/mamaliga.jpg',
+      alt: 'Mămăligă (Polenta)',
+      href: 'https://en.wikipedia.org/wiki/M%C4%83m%C4%83lig%C4%83',
+    },
+    {
+      src: API_BASE ? `${API_BASE}/uploads/yorkshire-pudding.jpg` : '/imgs/yorkshire-pudding.jpg',
+      alt: 'Yorkshire pudding',
+      href: 'https://en.wikipedia.org/wiki/Yorkshire_pudding',
+    },
+    {
+      src: '/static/mfr-v21-collage.png',
+      alt: 'MyFoodRepo v2.1 dataset collage',
+      href: 'https://www.aicrowd.com/challenges/food-recognition-benchmark-2022',
+    },
+    {
+      src: '/static/mfr-v04-collage.jpg',
+      alt: 'MyFoodRepo v0.4 dataset collage',
+      href: 'https://www.aicrowd.com/challenges/food-recognition-challenge/',
+    },
+  ];
 
   return (
     <Box id="logoCollection" sx={{ py: 4 }}>
@@ -41,19 +81,70 @@ export default function LogoCollection() {
         align="center"
         color="text.secondary"
       >
-        Trusted by the best companies
+        From notebook to Netlify: train, segment, deploy
       </Typography>
       <Grid container justifyContent="center" sx={{ mt: 0.5, opacity: 0.6 }}>
         {logos.map((logo, index) => (
           <Grid item key={index}>
-            <img
-              src={logo}
-              alt={`Fake company number ${index + 1}`}
-              style={logoStyle}
-            />
+            {logo.href ? (
+              <a href={logo.href} target="_blank" rel="noopener noreferrer">
+                <img src={logo.src} alt={logo.alt} style={logoStyle} />
+              </a>
+            ) : (
+              <img src={logo.src} alt={logo.alt} style={logoStyle} />
+            )}
           </Grid>
         ))}
       </Grid>
+
+      {/* What u8what recognises */}
+      <Typography
+        component="p"
+        variant="subtitle2"
+        align="center"
+        color="text.secondary"
+        sx={{ mt: 4 }}
+      >
+        What u8what recognises
+      </Typography>
+      <Grid container justifyContent="center" sx={{ mt: 0.5, opacity: 0.9 }}>
+        {recogniseItems.map((item, index) => (
+          <Grid item key={index}>
+            {item.href ? (
+              <a href={item.href} target="_blank" rel="noopener noreferrer">
+                <img src={item.src} alt={item.alt} style={logoStyle} />
+              </a>
+            ) : (
+              <img src={item.src} alt={item.alt} style={logoStyle} />
+            )}
+          </Grid>
+        ))}
+      </Grid>
+      <Typography
+        component="p"
+        variant="caption"
+        align="center"
+        color="text.secondary"
+        sx={{ mt: 1, display: 'block' }}
+      >
+        Models trained on MyFoodRepo datasets:
+        {' '}
+        <Link
+          href="https://www.aicrowd.com/challenges/food-recognition-benchmark-2022"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          v2.1
+        </Link>
+        {' '}and{' '}
+        <Link
+          href="https://www.aicrowd.com/challenges/food-recognition-challenge/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          v0.4
+        </Link>
+      </Typography>
     </Box>
   );
 }
