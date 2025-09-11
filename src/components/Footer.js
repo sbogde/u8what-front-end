@@ -13,7 +13,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 // import TwitterIcon from "@mui/icons-material/X";
 
 const logoStyle = {
-  width: "340px",
+  width: "140px",
   height: "auto",
 };
 
@@ -60,9 +60,10 @@ export default function Footer() {
           <Box sx={{ width: { xs: "100%", sm: "60%" } }}>
             <Box sx={{ ml: "-15px" }}>
               <img
-                src={"/imgs/whipma.svg"}
+                src={"/imgs/u8what.svg"}
                 style={logoStyle}
-                alt="logo of sitemark"
+                alt="old logo of u8what"
+                title="old logo of u8what"
               />
             </Box>
             <Typography variant="body2" fontWeight={600} gutterBottom>
