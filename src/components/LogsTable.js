@@ -50,19 +50,23 @@ const LogsTable = ({ reloadKey }) => {
 
   // refresh when parent signals a reload (after a new upload)
   useEffect(() => {
-    if (page === 1) {
-      fetchLogs(1);
-    } else {
-      setPage(1);
-    }
+    setPage((prev) => {
+      if (prev === 1) {
+        fetchLogs(1); // force refresh on current page 1
+        return prev; // stay on 1
+      }
+      return 1; // jump to page 1 -> other effect will fetch
+    });
   }, [reloadKey]);
 
   const handleReload = () => {
-    if (page === 1) {
-      fetchLogs(1); // force refresh
-    } else {
-      setPage(1); // will trigger useEffect
-    }
+    setPage((prev) => {
+      if (prev === 1) {
+        fetchLogs(1);
+        return prev;
+      }
+      return 1;
+    });
   };
 
   const disablePrev = page <= 1;
