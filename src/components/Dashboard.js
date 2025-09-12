@@ -37,6 +37,7 @@ const Dashboard = () => {
           <Gallery
             selectedModel={selectedModel}
             onResultsUpdate={handleResultsUpdate}
+            reloadKey={logsReloadKey}
           />
         </Grid>
         <Grid item xs={12} md={8}>
