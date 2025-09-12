@@ -3,6 +3,7 @@ import { Box, Grid } from "@mui/material";
 import UploadForm from "./UploadForm";
 import SegmentationResults from "./SegmentationResults";
 import LogsTable from "./LogsTable";
+import Gallery from "./Gallery";
 
 const Dashboard = () => {
   const [results, setResults] = useState([]);
@@ -10,6 +11,7 @@ const Dashboard = () => {
   const [originalImage, setOriginalImage] = useState("");
   const [modelUsed, setModelUsed] = useState("");
   const [logsReloadKey, setLogsReloadKey] = useState(0);
+  const [selectedModel, setSelectedModel] = useState("v0.4-Ultralytics-Hub");
 
   const handleResultsUpdate = (data) => {
     setResults(data?.results || []);
@@ -27,7 +29,15 @@ const Dashboard = () => {
     <Box sx={{ flexGrow: 1, p: 2, width: "100%" }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
-          <UploadForm onResultsUpdate={handleResultsUpdate} />
+          <UploadForm
+            onResultsUpdate={handleResultsUpdate}
+            selectedModel={selectedModel}
+            onSelectedModelChange={setSelectedModel}
+          />
+          <Gallery
+            selectedModel={selectedModel}
+            onResultsUpdate={handleResultsUpdate}
+          />
         </Grid>
         <Grid item xs={12} md={8}>
           <SegmentationResults

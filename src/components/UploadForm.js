@@ -10,8 +10,7 @@ import Typography from "@mui/material/Typography";
 
 import ImageUpload from "./ImageUpload";
 
-const UploadForm = ({ onResultsUpdate }) => {
-  const [selectedModel, setSelectedModel] = useState("v0.4-Ultralytics-Hub");
+const UploadForm = ({ onResultsUpdate, selectedModel, onSelectedModelChange }) => {
   const [loading, setLoading] = useState(false);
 
   const handleImageUpload = (image) => {
@@ -55,7 +54,7 @@ const UploadForm = ({ onResultsUpdate }) => {
             id="model-select"
             value={selectedModel}
             label="Model"
-            onChange={(e) => setSelectedModel(e.target.value)}
+            onChange={(e) => onSelectedModelChange && onSelectedModelChange(e.target.value)}
           >
             <MenuItem value="v0.4-Ultralytics-Hub">
               v0.4 Ultralytics Hub
