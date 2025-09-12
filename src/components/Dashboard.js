@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Grid } from "@mui/material";
 import UploadForm from "./UploadForm";
-import ClassificationResults from "./ClassificationResults";
+import SegmentationResults from "./SegmentationResults";
 import LogsTable from "./LogsTable";
 
 const Dashboard = () => {
@@ -30,7 +30,7 @@ const Dashboard = () => {
           <UploadForm onResultsUpdate={handleResultsUpdate} />
         </Grid>
         <Grid item xs={12} md={8}>
-          <ClassificationResults
+          <SegmentationResults
             results={results}
             error={error}
             originalImage={originalImage}

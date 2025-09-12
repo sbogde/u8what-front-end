@@ -14,12 +14,7 @@ import Tooltip from "@mui/material/Tooltip";
 import LayersRoundedIcon from "@mui/icons-material/LayersRounded"; // segmented
 import PhotoRoundedIcon from "@mui/icons-material/PhotoRounded"; // original
 
-const ClassificationResults = ({
-  results,
-  error,
-  originalImage,
-  modelUsed,
-}) => {
+const SegmentationResults = ({ results, error, originalImage, modelUsed }) => {
   const [view, setView] = useState("segmented"); // "segmented" | "original"
 
   // Build URLs
@@ -150,4 +145,4 @@ const ClassificationResults = ({
   );
 };
 
-export default ClassificationResults;
+export default SegmentationResults;
