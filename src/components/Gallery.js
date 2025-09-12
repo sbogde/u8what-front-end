@@ -113,16 +113,16 @@ const Gallery = ({ selectedModel, onResultsUpdate, reloadKey }) => {
           </Typography>
           <ButtonGroup size="small" variant="text">
             <Button
-              onClick={() => setMode("history")}
-              disabled={mode === "history"}
-            >
-              History
-            </Button>
-            <Button
               onClick={() => setMode("curated")}
               disabled={mode === "curated"}
             >
               Curated
+            </Button>
+            <Button
+              onClick={() => setMode("history")}
+              disabled={mode === "history"}
+            >
+              History
             </Button>
           </ButtonGroup>
         </Stack>
