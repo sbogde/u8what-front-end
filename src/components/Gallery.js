@@ -108,7 +108,7 @@ const Gallery = ({ selectedModel, onResultsUpdate, reloadKey }) => {
           justifyContent="space-between"
           sx={{ mb: 1 }}
         >
-          <Typography variant="h6">
+          <Typography variant="h7">
             {mode === "history" ? "History" : "Curated"} Gallery
           </Typography>
           <ButtonGroup size="small" variant="text">
