@@ -199,6 +199,23 @@ function AppAppBar({ mode, toggleColorMode }) {
                       mode={mode}
                       toggleColorMode={toggleColorMode}
                     />
+                    {deferredPrompt && (
+                      <Button
+                        color="primary"
+                        variant="text"
+                        size="small"
+                        onClick={() => {
+                          deferredPrompt.prompt();
+                          deferredPrompt.userChoice.then((choiceResult) => {
+                            setDeferredPrompt(null);
+                            setOpen(false);
+                          });
+                        }}
+                        sx={{ mt: 1 }}
+                      >
+                        Install
+                      </Button>
+                    )}
                   </Box>
                   <MenuItem onClick={() => scrollToSection("features")}>
                     Models
