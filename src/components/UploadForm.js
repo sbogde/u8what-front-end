@@ -10,8 +10,16 @@ import Typography from "@mui/material/Typography";
 
 import ImageUpload from "./ImageUpload";
 
-const UploadForm = ({ onResultsUpdate, selectedModel, onSelectedModelChange }) => {
-  const [loading, setLoading] = useState(false);
+const UploadForm = ({
+  onResultsUpdate,
+  selectedModel,
+  onSelectedModelChange,
+  loading: loadingProp,
+  onLoadingChange,
+}) => {
+  const [internalLoading, setInternalLoading] = useState(false);
+  const loading = typeof loadingProp === "boolean" ? loadingProp : internalLoading;
+  const setLoading = typeof onLoadingChange === "function" ? onLoadingChange : setInternalLoading;
 
   const handleImageUpload = (image) => {
     setLoading(true);

@@ -6,6 +6,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import Box from "@mui/material/Box";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -14,7 +15,7 @@ import Tooltip from "@mui/material/Tooltip";
 import LayersRoundedIcon from "@mui/icons-material/LayersRounded"; // segmented
 import PhotoRoundedIcon from "@mui/icons-material/PhotoRounded"; // original
 
-const SegmentationResults = ({ results, error, originalImage, modelUsed }) => {
+const SegmentationResults = ({ results, error, originalImage, modelUsed, loading }) => {
   const [view, setView] = useState("segmented"); // "segmented" | "original"
 
   // Build URLs
@@ -39,6 +40,7 @@ const SegmentationResults = ({ results, error, originalImage, modelUsed }) => {
         <Typography variant="h6" gutterBottom>
           Segmentation Results
         </Typography>
+        {loading && <LinearProgress sx={{ mb: 2 }} />}
         {error && <Alert severity="error">{error}</Alert>}
 
         {!error && modelUsed && modelUsed.length && (
@@ -96,6 +98,7 @@ const SegmentationResults = ({ results, error, originalImage, modelUsed }) => {
                       onChange={(e, v) => v && setView(v)}
                       size="small"
                       color="primary"
+                      disabled={loading}
                     >
                       <ToggleButton
                         value="original"

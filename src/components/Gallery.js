@@ -16,7 +16,7 @@ const PAGE_SIZE = 9;
 // A small gallery that can show recent (history-based) images from logs
 // or a curated set. Clicking a thumbnail re-runs segmentation as if
 // the user uploaded the image.
-const Gallery = ({ selectedModel, onResultsUpdate, reloadKey }) => {
+const Gallery = ({ selectedModel, onResultsUpdate, reloadKey, onLoadingChange }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("curated"); // 'history' | 'curated'
@@ -71,6 +71,7 @@ const Gallery = ({ selectedModel, onResultsUpdate, reloadKey }) => {
   const runSegmentation = async (filename) => {
     if (loading) return;
     setLoading(true);
+    if (onLoadingChange) onLoadingChange(true);
     try {
       // Fetch the existing image and reupload it as if it was selected locally
       const imageUrl = imageUrlFor(filename);
@@ -96,6 +97,7 @@ const Gallery = ({ selectedModel, onResultsUpdate, reloadKey }) => {
         onResultsUpdate({ error: `${errorMessage} [Gallery]` });
     } finally {
       setLoading(false);
+      if (onLoadingChange) onLoadingChange(false);
     }
   };
 

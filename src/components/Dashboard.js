@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [originalImage, setOriginalImage] = useState("");
   const [modelUsed, setModelUsed] = useState("");
   const [logsReloadKey, setLogsReloadKey] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [selectedModel, setSelectedModel] = useState("v0.4-Ultralytics-Hub");
 
   const handleResultsUpdate = (data) => {
@@ -33,11 +34,14 @@ const Dashboard = () => {
             onResultsUpdate={handleResultsUpdate}
             selectedModel={selectedModel}
             onSelectedModelChange={setSelectedModel}
+            loading={loading}
+            onLoadingChange={setLoading}
           />
           <Gallery
             selectedModel={selectedModel}
             onResultsUpdate={handleResultsUpdate}
             reloadKey={logsReloadKey}
+            onLoadingChange={setLoading}
           />
         </Grid>
         <Grid item xs={12} md={8}>
@@ -46,6 +50,7 @@ const Dashboard = () => {
             error={error}
             originalImage={originalImage}
             modelUsed={modelUsed}
+            loading={loading}
           />
         </Grid>
         <Grid item xs={12}>
