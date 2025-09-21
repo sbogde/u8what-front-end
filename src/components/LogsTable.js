@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -13,6 +13,11 @@ import {
   Button,
   IconButton,
   Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Divider,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -20,6 +25,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import LastPageIcon from "@mui/icons-material/LastPage";
+import { getModelLabel } from "./modelOptions";
 
 const PAGE_SIZE = 5;
 
@@ -28,30 +34,36 @@ const LogsTable = ({ reloadKey }) => {
   const [page, setPage] = useState(1); // 1-based page
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [selectedLog, setSelectedLog] = useState(null);
   const totalPages = total > 0 ? Math.ceil(total / PAGE_SIZE) : 1;
   const displayPage = Math.min(page, totalPages);
+  const API_URL = process.env.REACT_APP_API_URL;
 
-  const fetchLogs = async (p) => {
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/logs?page=${p}&page_size=${PAGE_SIZE}`
-      );
-      const data = await res.json();
-      setItems(data.items || []);
-      setTotal(data.total || 0);
-    } catch (err) {
-      console.error("Error fetching logs:", err);
-      setItems([]);
-      setTotal(0);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchLogs = useCallback(
+    async (p) => {
+      setLoading(true);
+      try {
+        if (!API_URL) {
+          throw new Error("REACT_APP_API_URL is not configured");
+        }
+        const res = await fetch(`${API_URL}/logs?page=${p}&page_size=${PAGE_SIZE}`);
+        const data = await res.json();
+        setItems(data.items || []);
+        setTotal(data.total || 0);
+      } catch (err) {
+        console.error("Error fetching logs:", err);
+        setItems([]);
+        setTotal(0);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [API_URL]
+  );
 
   useEffect(() => {
     fetchLogs(page);
-  }, [page]);
+  }, [page, fetchLogs]);
 
   // refresh when parent signals a reload (after a new upload)
   useEffect(() => {
@@ -62,7 +74,7 @@ const LogsTable = ({ reloadKey }) => {
       }
       return 1; // jump to page 1 -> other effect will fetch
     });
-  }, [reloadKey]);
+  }, [reloadKey, fetchLogs]);
 
   const handleReload = () => {
     setPage((prev) => {
@@ -112,12 +124,26 @@ const LogsTable = ({ reloadKey }) => {
                 <TableRow key={log.id}>
                   <TableCell>{log.id}</TableCell>
                   <TableCell>
-                    <Avatar
-                      alt={log.image}
-                      title={log.image}
-                      src={`${process.env.REACT_APP_API_URL}/uploads/${log.image}`}
-                      sx={{ width: 40, height: 40 }}
-                    />
+                    <Box
+                      component="button"
+                      onClick={() => setSelectedLog(log)}
+                      title="View details"
+                      type="button"
+                      sx={{
+                        p: 0,
+                        m: 0,
+                        border: "none",
+                        background: "transparent",
+                        cursor: "pointer",
+                        lineHeight: 0,
+                      }}
+                    >
+                      <Avatar
+                        alt={log.image}
+                        src={`${API_URL}/uploads/${log.image}`}
+                        sx={{ width: 48, height: 48 }}
+                      />
+                    </Box>
                   </TableCell>
                   <TableCell>{log.model}</TableCell>
                   <TableCell>{log.prediction || "—"}</TableCell>
@@ -194,6 +220,62 @@ const LogsTable = ({ reloadKey }) => {
             </Button>
           </Box>
         </Box>
+        <Dialog
+          open={Boolean(selectedLog)}
+          onClose={() => setSelectedLog(null)}
+          fullWidth
+          maxWidth="sm"
+        >
+          <DialogTitle>
+            {selectedLog ? `Log #${selectedLog.id}` : "Log details"}
+          </DialogTitle>
+          <DialogContent dividers>
+            {selectedLog && (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <Box
+                  component="img"
+                  src={`${API_URL}/uploads/${selectedLog.image}`}
+                  alt={selectedLog.image}
+                  sx={{
+                    width: "100%",
+                    maxHeight: 320,
+                    objectFit: "contain",
+                    borderRadius: 1,
+                    border: "1px solid",
+                    borderColor: "divider",
+                  }}
+                />
+                <Divider />
+                <Typography variant="body2">
+                  <strong>Model:</strong> {getModelLabel(selectedLog.model)}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Best Prediction:</strong>{" "}
+                  {selectedLog.prediction || "—"}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Highest Confidence:</strong>{" "}
+                  {typeof selectedLog.confidence === "number"
+                    ? `${selectedLog.confidence.toFixed(2)}%`
+                    : "—"}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Total Detections:</strong>{" "}
+                  {selectedLog.num_detections ?? "—"}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Date:</strong> {selectedLog.date}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Image:</strong> {selectedLog.image}
+                </Typography>
+              </Box>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setSelectedLog(null)}>Close</Button>
+          </DialogActions>
+        </Dialog>
       </CardContent>
     </Card>
   );

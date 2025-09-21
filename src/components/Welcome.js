@@ -56,7 +56,7 @@ export default function Welcome() {
                     : "primary.light",
               }}
             >
-              u8what.netlify.app!
+              u8what.food!
             </Typography>
           </Typography>
         </Stack>
