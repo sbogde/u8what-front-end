@@ -18,6 +18,8 @@ import Avatar from "@mui/material/Avatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import LastPageIcon from "@mui/icons-material/LastPage";
 
 const PAGE_SIZE = 5;
 
@@ -156,17 +158,40 @@ const LogsTable = ({ reloadKey }) => {
             <Typography variant="body2">
               Page {displayPage}/{totalPages}
             </Typography>
+            <Button
+              variant="contained"
+              startIcon={<FirstPageIcon />}
+              onClick={() => setPage(1)}
+              disabled={disablePrev || loading}
+            >
+              First
+            </Button>
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "flex-end" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              alignItems: "flex-end",
+            }}
+          >
             <Button
               variant="contained"
               endIcon={<ArrowForwardIcon />}
-              onClick={() => setPage((p) => p + 1)}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={disableNext || loading}
             >
               Next
             </Button>
             <Typography variant="body2">{total} total records</Typography>
+            <Button
+              variant="contained"
+              endIcon={<LastPageIcon />}
+              onClick={() => setPage(totalPages)}
+              disabled={disableNext || loading}
+            >
+              Last
+            </Button>
           </Box>
         </Box>
       </CardContent>
