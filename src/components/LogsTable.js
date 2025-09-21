@@ -12,6 +12,7 @@ import {
   Paper,
   Button,
   IconButton,
+  Box,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -25,6 +26,8 @@ const LogsTable = ({ reloadKey }) => {
   const [page, setPage] = useState(1); // 1-based page
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+  const totalPages = total > 0 ? Math.ceil(total / PAGE_SIZE) : 1;
+  const displayPage = Math.min(page, totalPages);
 
   const fetchLogs = async (p) => {
     setLoading(true);
@@ -70,7 +73,7 @@ const LogsTable = ({ reloadKey }) => {
   };
 
   const disablePrev = page <= 1;
-  const disableNext = page * PAGE_SIZE >= total;
+  const disableNext = page >= totalPages;
 
   return (
     <Card>
@@ -133,34 +136,39 @@ const LogsTable = ({ reloadKey }) => {
           </Table>
         </TableContainer>
 
-        <div
-          style={{
+        <Box
+          sx={{
             display: "flex",
             justifyContent: "space-between",
-            marginTop: "1rem",
+            alignItems: "flex-start",
+            mt: 2,
           }}
         >
-          <Button
-            variant="contained"
-            startIcon={<ArrowBackIcon />}
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={disablePrev || loading}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="contained"
-            endIcon={<ArrowForwardIcon />}
-            onClick={() => setPage((p) => p + 1)}
-            disabled={disableNext || loading}
-          >
-            Next
-          </Button>
-        </div>
-
-        <Typography variant="body2" sx={{ mt: 1 }}>
-          Page {page} • {total} total
-        </Typography>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <Button
+              variant="contained"
+              startIcon={<ArrowBackIcon />}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={disablePrev || loading}
+            >
+              Previous
+            </Button>
+            <Typography variant="body2">
+              Page {displayPage}/{totalPages}
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "flex-end" }}>
+            <Button
+              variant="contained"
+              endIcon={<ArrowForwardIcon />}
+              onClick={() => setPage((p) => p + 1)}
+              disabled={disableNext || loading}
+            >
+              Next
+            </Button>
+            <Typography variant="body2">{total} total records</Typography>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
   );
