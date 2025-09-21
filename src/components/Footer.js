@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useMemo } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -22,14 +22,35 @@ function Copyright() {
     <Typography variant="body2" color="text.secondary" mt={1}>
       {" © "}
       <Link href="https://www.guru.com/freelancers/sorin-bogde/reviews">
-        Sorin Bogde&nbsp;
+        Sorin Bogde
       </Link>
+      &nbsp;
       {new Date().getFullYear()}
     </Typography>
   );
 }
 
+const useFooterLinkHandlers = () => {
+  return useMemo(() => {
+    const scrollToSection = (sectionId) => {
+      const offset = 128;
+      const el = document.getElementById(sectionId);
+      if (!el) return;
+      const top = el.offsetTop - offset;
+      el.scrollIntoView({ behavior: "smooth" });
+      window.scrollTo({ top, behavior: "smooth" });
+    };
+
+    return {
+      goModels: () => scrollToSection("features"),
+      goHighlights: () => scrollToSection("highlights"),
+      goFaq: () => scrollToSection("faq"),
+    };
+  }, []);
+};
+
 export default function Footer() {
+  const { goModels, goHighlights, goFaq } = useFooterLinkHandlers();
   return (
     <Container
       sx={{
@@ -70,9 +91,9 @@ export default function Footer() {
               Newsletter
             </Typography>
             <Typography variant="body2" color="text.secondary" mb={2}>
-              If you are brave enough, subscribe to our newsletter.
+              Coming soon — drop us a line if you want to be notified.
             </Typography>
-            <Stack direction="row" spacing={1} useFlexGap>
+            <Stack direction="row" spacing={1} useFlexGap sx={{ opacity: 0.6 }}>
               <TextField
                 id="outlined-basic"
                 hiddenLabel
@@ -81,15 +102,17 @@ export default function Footer() {
                 fullWidth
                 aria-label="Enter your email address"
                 placeholder="Your email address"
+                disabled
                 inputProps={{
                   autoComplete: "off",
-                  "aria-label": "Enter your email address",
+                  "aria-label": "Enter your email address (coming soon)",
                 }}
               />
               <Button
                 variant="contained"
                 color="primary"
                 sx={{ flexShrink: 0 }}
+                disabled
               >
                 Subscribe
               </Button>
@@ -103,18 +126,33 @@ export default function Footer() {
             gap: 1,
           }}
         >
-          <Link color="text.secondary" href="#">
+          <Typography variant="body2" fontWeight={600}>
+            Nav
+          </Typography>
+          <Link
+            color="text.secondary"
+            onClick={goModels}
+            sx={{ cursor: "pointer" }}
+          >
             Models
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link
+            color="text.secondary"
+            onClick={goHighlights}
+            sx={{ cursor: "pointer" }}
+          >
             Highlights
           </Link>
-          <Link color="text.secondary" href="#">
+          <Link
+            color="text.secondary"
+            onClick={goFaq}
+            sx={{ cursor: "pointer" }}
+          >
             FAQs
           </Link>
         </Box>
 
-        <Box
+        {/* <Box
           sx={{
             display: { xs: "none", sm: "flex" },
             flexDirection: "column",
@@ -133,7 +171,7 @@ export default function Footer() {
           <Link color="text.secondary" href="#">
             Contact
           </Link>
-        </Box>
+        </Box> */}
       </Box>
       <Box
         sx={{
@@ -146,7 +184,7 @@ export default function Footer() {
         }}
       >
         <div>
-          <Link color="text.secondary" href="#">
+          {/* <Link color="text.secondary" href="#">
             Privacy Policy
           </Link>
           <Typography display="inline" sx={{ mx: 0.5, opacity: 0.5 }}>
@@ -154,7 +192,7 @@ export default function Footer() {
           </Typography>
           <Link color="text.secondary" href="#">
             Terms of Service
-          </Link>
+          </Link> */}
           <Copyright />
         </div>
         <Stack
