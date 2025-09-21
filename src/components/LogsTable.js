@@ -25,6 +25,11 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import LastPageIcon from "@mui/icons-material/LastPage";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Tooltip from "@mui/material/Tooltip";
+import LayersRoundedIcon from "@mui/icons-material/LayersRounded";
+import PhotoRoundedIcon from "@mui/icons-material/PhotoRounded";
 import { getModelLabel } from "./modelOptions";
 
 const PAGE_SIZE = 5;
@@ -35,6 +40,7 @@ const LogsTable = ({ reloadKey }) => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [selectedLog, setSelectedLog] = useState(null);
+  const [modalView, setModalView] = useState("original");
   const totalPages = total > 0 ? Math.ceil(total / PAGE_SIZE) : 1;
   const displayPage = Math.min(page, totalPages);
   const API_URL = process.env.REACT_APP_API_URL;
@@ -46,7 +52,9 @@ const LogsTable = ({ reloadKey }) => {
         if (!API_URL) {
           throw new Error("REACT_APP_API_URL is not configured");
         }
-        const res = await fetch(`${API_URL}/logs?page=${p}&page_size=${PAGE_SIZE}`);
+        const res = await fetch(
+          `${API_URL}/logs?page=${p}&page_size=${PAGE_SIZE}`
+        );
         const data = await res.json();
         setItems(data.items || []);
         setTotal(data.total || 0);
@@ -76,6 +84,12 @@ const LogsTable = ({ reloadKey }) => {
     });
   }, [reloadKey, fetchLogs]);
 
+  useEffect(() => {
+    if (selectedLog) {
+      setModalView("original");
+    }
+  }, [selectedLog]);
+
   const handleReload = () => {
     setPage((prev) => {
       if (prev === 1) {
@@ -86,8 +100,24 @@ const LogsTable = ({ reloadKey }) => {
     });
   };
 
+  const handleCloseModal = () => {
+    setSelectedLog(null);
+    setModalView("original");
+  };
+
   const disablePrev = page <= 1;
   const disableNext = page >= totalPages;
+  const originalModalUrl =
+    selectedLog && API_URL ? `${API_URL}/uploads/${selectedLog.image}` : "";
+  const segmentedModalUrl =
+    selectedLog && API_URL
+      ? `${API_URL}/uploads/models/segmented_${selectedLog.image}`
+      : "";
+  const modalImageUrl =
+    modalView === "segmented" && segmentedModalUrl
+      ? segmentedModalUrl
+      : originalModalUrl;
+  const isToggleDisabled = !segmentedModalUrl;
 
   return (
     <Card>
@@ -222,7 +252,7 @@ const LogsTable = ({ reloadKey }) => {
         </Box>
         <Dialog
           open={Boolean(selectedLog)}
-          onClose={() => setSelectedLog(null)}
+          onClose={handleCloseModal}
           fullWidth
           maxWidth="sm"
         >
@@ -232,19 +262,61 @@ const LogsTable = ({ reloadKey }) => {
           <DialogContent dividers>
             {selectedLog && (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                <Box
-                  component="img"
-                  src={`${API_URL}/uploads/${selectedLog.image}`}
-                  alt={selectedLog.image}
-                  sx={{
-                    width: "100%",
-                    maxHeight: 320,
-                    objectFit: "contain",
-                    borderRadius: 1,
-                    border: "1px solid",
-                    borderColor: "divider",
-                  }}
-                />
+                <Box sx={{ position: "relative" }}>
+                  <Box
+                    component="img"
+                    src={modalImageUrl}
+                    alt={selectedLog.image}
+                    sx={{
+                      width: "100%",
+                      maxHeight: 320,
+                      objectFit: "contain",
+                      borderRadius: 1,
+                      border: "1px solid",
+                      borderColor: "divider",
+                      bgcolor: "background.default",
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      bgcolor: "rgba(0,0,0,0.5)",
+                      borderRadius: 2,
+                      p: 0.5,
+                      display: "flex",
+                      alignItems: "center",
+                      backdropFilter: "blur(2px)",
+                    }}
+                  >
+                    <ToggleButtonGroup
+                      value={modalView}
+                      exclusive
+                      onChange={(e, v) => v && setModalView(v)}
+                      size="small"
+                      color="primary"
+                    >
+                      <ToggleButton
+                        value="original"
+                        aria-label="Show original image"
+                      >
+                        <Tooltip title="Original">
+                          <PhotoRoundedIcon sx={{ color: "white" }} />
+                        </Tooltip>
+                      </ToggleButton>
+                      <ToggleButton
+                        value="segmented"
+                        aria-label="Show segmented image"
+                        disabled={isToggleDisabled}
+                      >
+                        <Tooltip title="Segmented">
+                          <LayersRoundedIcon sx={{ color: "white" }} />
+                        </Tooltip>
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  </Box>
+                </Box>
                 <Divider />
                 <Typography variant="body2">
                   <strong>Model:</strong> {getModelLabel(selectedLog.model)}
@@ -266,14 +338,14 @@ const LogsTable = ({ reloadKey }) => {
                 <Typography variant="body2">
                   <strong>Date:</strong> {selectedLog.date}
                 </Typography>
-                <Typography variant="body2">
+                {/* <Typography variant="body2">
                   <strong>Image:</strong> {selectedLog.image}
-                </Typography>
+                </Typography> */}
               </Box>
             )}
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setSelectedLog(null)}>Close</Button>
+            <Button onClick={handleCloseModal}>Close</Button>
           </DialogActions>
         </Dialog>
       </CardContent>
