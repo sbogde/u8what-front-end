@@ -10,6 +10,7 @@ import {
   Button,
   Stack,
 } from "@mui/material";
+import { getModelLabel } from "./modelOptions";
 
 const PAGE_SIZE = 9;
 
@@ -20,6 +21,7 @@ const Gallery = ({ selectedModel, onResultsUpdate, reloadKey, onLoadingChange })
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("curated"); // 'history' | 'curated'
+  const selectedModelLabel = getModelLabel(selectedModel);
 
   const API_BASE = process.env.REACT_APP_API_URL;
   const curatedFiles = useMemo(
@@ -131,7 +133,7 @@ const Gallery = ({ selectedModel, onResultsUpdate, reloadKey, onLoadingChange })
         <Grid container spacing={1}>
           {items.map((it) => (
             <Grid item xs={4} key={it.id}>
-              <Tooltip title={`Run with ${selectedModel}`} placement="top">
+              <Tooltip title={`Run with ${selectedModelLabel}`} placement="top">
                 <Box
                   component="img"
                   src={imageUrlFor(it.image)}
