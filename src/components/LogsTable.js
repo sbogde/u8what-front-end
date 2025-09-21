@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Card,
   CardContent,
@@ -18,6 +18,9 @@ import {
   DialogContent,
   DialogActions,
   Divider,
+  FormControl,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Avatar from "@mui/material/Avatar";
@@ -137,6 +140,10 @@ const LogsTable = ({ reloadKey, onResultsUpdate, onLoadingChange }) => {
   const isToggleDisabled = !baseSegmentedUrl;
   const showRunAgainButton = typeof onResultsUpdate === "function";
   const canRunAgain = Boolean(selectedLog && baseOriginalUrl && showRunAgainButton);
+  const pageOptions = useMemo(
+    () => Array.from({ length: totalPages }, (_, idx) => idx + 1),
+    [totalPages]
+  );
 
   const handleRunAgain = async () => {
     if (!canRunAgain || modalLoading) return;
@@ -260,6 +267,8 @@ const LogsTable = ({ reloadKey, onResultsUpdate, onLoadingChange }) => {
             justifyContent: "space-between",
             alignItems: "flex-start",
             mt: 2,
+            flexWrap: "wrap",
+            gap: 2,
           }}
         >
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -282,6 +291,30 @@ const LogsTable = ({ reloadKey, onResultsUpdate, onLoadingChange }) => {
             >
               First
             </Button>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 1,
+              minWidth: { xs: "100%", sm: 160 },
+            }}
+          >
+            <Typography variant="body2">Jump to page</Typography>
+            <FormControl size="small" fullWidth>
+              <Select
+                value={displayPage}
+                onChange={(e) => setPage(Number(e.target.value))}
+                disabled={loading || totalPages <= 1}
+              >
+                {pageOptions.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
           <Box
             sx={{
