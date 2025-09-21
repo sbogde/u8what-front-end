@@ -54,7 +54,11 @@ const Dashboard = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <LogsTable reloadKey={logsReloadKey} />
+          <LogsTable
+            reloadKey={logsReloadKey}
+            onResultsUpdate={handleResultsUpdate}
+            onLoadingChange={setLoading}
+          />
         </Grid>
       </Grid>
     </Box>

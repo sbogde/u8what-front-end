@@ -19,6 +19,7 @@ import {
   DialogActions,
   Divider,
 } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import Avatar from "@mui/material/Avatar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -30,20 +31,23 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
 import LayersRoundedIcon from "@mui/icons-material/LayersRounded";
 import PhotoRoundedIcon from "@mui/icons-material/PhotoRounded";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import { getModelLabel } from "./modelOptions";
 
 const PAGE_SIZE = 5;
 
-const LogsTable = ({ reloadKey }) => {
+const LogsTable = ({ reloadKey, onResultsUpdate, onLoadingChange }) => {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1); // 1-based page
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [selectedLog, setSelectedLog] = useState(null);
   const [modalView, setModalView] = useState("original");
+  const [modalImageVersion, setModalImageVersion] = useState(0);
   const totalPages = total > 0 ? Math.ceil(total / PAGE_SIZE) : 1;
   const displayPage = Math.min(page, totalPages);
   const API_URL = process.env.REACT_APP_API_URL;
+  const [modalLoading, setModalLoading] = useState(false);
 
   const fetchLogs = useCallback(
     async (p) => {
@@ -87,6 +91,10 @@ const LogsTable = ({ reloadKey }) => {
   useEffect(() => {
     if (selectedLog) {
       setModalView("original");
+      setModalLoading(false);
+      setModalImageVersion(Date.now());
+    } else {
+      setModalImageVersion(0);
     }
   }, [selectedLog]);
 
@@ -103,21 +111,73 @@ const LogsTable = ({ reloadKey }) => {
   const handleCloseModal = () => {
     setSelectedLog(null);
     setModalView("original");
+    setModalLoading(false);
+    setModalImageVersion(0);
   };
 
   const disablePrev = page <= 1;
   const disableNext = page >= totalPages;
-  const originalModalUrl =
+  const baseOriginalUrl =
     selectedLog && API_URL ? `${API_URL}/uploads/${selectedLog.image}` : "";
-  const segmentedModalUrl =
+  const baseSegmentedUrl =
     selectedLog && API_URL
       ? `${API_URL}/uploads/models/segmented_${selectedLog.image}`
       : "";
+  const cacheParam = modalImageVersion ? `?v=${modalImageVersion}` : "";
+  const originalModalUrl = baseOriginalUrl
+    ? `${baseOriginalUrl}${cacheParam}`
+    : "";
+  const segmentedModalUrl = baseSegmentedUrl
+    ? `${baseSegmentedUrl}${cacheParam}`
+    : "";
   const modalImageUrl =
     modalView === "segmented" && segmentedModalUrl
       ? segmentedModalUrl
       : originalModalUrl;
-  const isToggleDisabled = !segmentedModalUrl;
+  const isToggleDisabled = !baseSegmentedUrl;
+  const showRunAgainButton = typeof onResultsUpdate === "function";
+  const canRunAgain = Boolean(selectedLog && baseOriginalUrl && showRunAgainButton);
+
+  const handleRunAgain = async () => {
+    if (!canRunAgain || modalLoading) return;
+    try {
+      setModalLoading(true);
+      if (typeof onLoadingChange === "function") onLoadingChange(true);
+
+      const imageResp = await fetch(baseOriginalUrl);
+      if (!imageResp.ok) {
+        throw new Error(`Failed to fetch image (${imageResp.status})`);
+      }
+      const blob = await imageResp.blob();
+      const file = new File([blob], selectedLog.image, {
+        type: blob.type || "image/jpeg",
+      });
+
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("model", selectedLog.model);
+
+      const segResp = await fetch(`${API_URL}/segment`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await segResp.json();
+
+      if (typeof onResultsUpdate === "function") onResultsUpdate(data);
+
+      setModalView(baseSegmentedUrl ? "segmented" : "original");
+      setModalImageVersion(Date.now());
+    } catch (err) {
+      console.error("Error re-running segmentation:", err);
+      if (typeof onResultsUpdate === "function") {
+        const errorMessage = err?.message || "Could not re-run segmentation";
+        onResultsUpdate({ error: `${errorMessage} [Logs]` });
+      }
+    } finally {
+      setModalLoading(false);
+      if (typeof onLoadingChange === "function") onLoadingChange(false);
+    }
+  };
 
   return (
     <Card>
@@ -256,8 +316,36 @@ const LogsTable = ({ reloadKey }) => {
           fullWidth
           maxWidth="sm"
         >
-          <DialogTitle>
-            {selectedLog ? `Log #${selectedLog.id}` : "Log details"}
+          <DialogTitle
+            component="div"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
+          >
+            <Typography variant="h6" component="div">
+              {selectedLog ? `Log #${selectedLog.id}` : "Log details"}
+            </Typography>
+            {showRunAgainButton && (
+              <Button
+                variant="contained"
+                color="success"
+                size="small"
+                startIcon={
+                  modalLoading ? (
+                    <CircularProgress size={16} color="inherit" />
+                  ) : (
+                    <PlayArrowRoundedIcon />
+                  )
+                }
+                onClick={handleRunAgain}
+                disabled={!canRunAgain || modalLoading}
+              >
+                {modalLoading ? "Running..." : "Run Again"}
+              </Button>
+            )}
           </DialogTitle>
           <DialogContent dividers>
             {selectedLog && (
@@ -296,10 +384,12 @@ const LogsTable = ({ reloadKey }) => {
                       onChange={(e, v) => v && setModalView(v)}
                       size="small"
                       color="primary"
+                      disabled={modalLoading}
                     >
                       <ToggleButton
                         value="original"
                         aria-label="Show original image"
+                        disabled={modalLoading}
                       >
                         <Tooltip title="Original">
                           <PhotoRoundedIcon sx={{ color: "white" }} />
@@ -308,7 +398,7 @@ const LogsTable = ({ reloadKey }) => {
                       <ToggleButton
                         value="segmented"
                         aria-label="Show segmented image"
-                        disabled={isToggleDisabled}
+                        disabled={isToggleDisabled || modalLoading}
                       >
                         <Tooltip title="Segmented">
                           <LayersRoundedIcon sx={{ color: "white" }} />
@@ -316,6 +406,21 @@ const LogsTable = ({ reloadKey }) => {
                       </ToggleButton>
                     </ToggleButtonGroup>
                   </Box>
+                  {modalLoading && (
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        inset: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        bgcolor: "rgba(0,0,0,0.35)",
+                        borderRadius: 1,
+                      }}
+                    >
+                      <CircularProgress size={32} sx={{ color: "common.white" }} />
+                    </Box>
+                  )}
                 </Box>
                 <Divider />
                 <Typography variant="body2">
